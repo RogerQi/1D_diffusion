@@ -224,7 +224,8 @@ class ConditionalUnet1D(nn.Module):
             x = mid_module(x, global_feature)
 
         for idx, (resnet, resnet2, upsample) in enumerate(self.up_modules):
-            x = torch.cat((x, h.pop()), dim=1)
+            prv = h.pop()
+            x = torch.cat((x, prv), dim=1)
             x = resnet(x, global_feature)
             if idx == len(self.up_modules) and len(h_local) > 0:
                 x = x + h_local[1]
